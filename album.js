@@ -30,7 +30,7 @@ export async function createAlbum(album) {
 export async function updateAlbumById(id, updates) {
   // Query the database to update the album and return the newly updated album or null
   const queryText =
-    "UPDATE albums SET title, published_date, artist_id WHERE title= $1, published_id = $2, artist_id = $3 RETURNING *";
+    "UPDATE albums SET title = $1, published_date = $2, artist_id = $3 WHERE id = $4 RETURNING *";
   const result = await pool.query(queryText, [
     updates.title,
     updates.published_date,

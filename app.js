@@ -10,21 +10,15 @@ import {
   updateArtistById,
   deleteArtistById,
 } from "./artist.js";
+
+// Import your helper functions for your albums here
 import {
-  createAlbum,
   getAlbum,
   getAlbumById,
+  createAlbum,
   updateAlbumById,
+  deleteAlbumById,
 } from "./album.js";
-
-// Import your helper functions for your second resource here
-// import {
-//   getAlbum,
-//   getAlbumById,
-//   createAlbum,
-//   updateAlbumById,
-//   deleteAlbumById,
-// } from "./album.js";
 
 // Initialize the express app
 const app = express();
@@ -146,7 +140,16 @@ app.patch("/albums/:id", async function (req, res) {
 });
 
 // Endpoint to delete a specific album by id
-app.delete("/albums/:id", async function (req, res) {});
+app.delete("/albums/:id", async function (req, res) {
+  const id = req.params.id;
+  const deletedAlbum = await deleteAlbumById(id);
+  if (!deletedAlbum) {
+    return res
+      .status(404)
+      .json({ status: "fail", data: { message: "Album not deleted" } });
+  }
+  res.status(200).json({ status: "success", data: deletedAlbum });
+});
 
 // Start the server and listen on the specified port
 app.listen(PORT, function () {
