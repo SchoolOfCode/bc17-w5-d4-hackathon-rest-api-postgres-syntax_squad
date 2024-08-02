@@ -10,6 +10,12 @@ import {
   updateArtistById,
   deleteArtistById,
 } from "./artist.js";
+import {
+  createAlbum,
+  getAlbum,
+  getAlbumById,
+  updateAlbumById,
+} from "./album.js";
 
 // Import your helper functions for your second resource here
 // import {
@@ -65,18 +71,17 @@ app.post("/artists/", async function (req, res) {
 });
 
 // Endpoint to update a specific artist by id
-app.patch("/artists/:id", async function (req, res){
+app.patch("/artists/:id", async function (req, res) {
   const id = req.params.id;
   const updates = req.body;
   const updatedArtist = await updateArtistById(id, updates);
   if (!updatedArtist) {
     return res
       .status(404)
-      .json({ status: "fail", data: { message: "Artist not updated" }});
+      .json({ status: "fail", data: { message: "Artist not updated" } });
   }
-  res.status(200).json({ status: "success", data: updatedArtist});
+  res.status(200).json({ status: "success", data: updatedArtist });
 });
-
 
 // Endpoint to delete a specific artist by id
 app.delete("/artists/:id", async function (req, res) {
@@ -85,27 +90,60 @@ app.delete("/artists/:id", async function (req, res) {
   if (!deletedArtist) {
     return res
       .status(404)
-      .json({ status: "fail", data: { message: "Artist not deleted" }});
+      .json({ status: "fail", data: { message: "Artist not deleted" } });
   }
-  res.status(200).json({ status: "success", data: deletedArtist});
+  res.status(200).json({ status: "success", data: deletedArtist });
 });
-
 
 // Resource Two Route Handlers
 
 // Endpoint to retrieve all album
 app.get("/albums/", async function (req, res) {
-  res.status(200).json({ status: "success", data: authors });
+  const album = await getAlbum();
+  res.status(200).json({ status: "success", data: album });
 });
 
 // Endpoint to retrieve a album by id
-app.get("/albums/:id", async function (req, res) {});
+app.get("/albums/:id", async function (req, res) {
+  const id = req.params.id;
+  const albumID = await getAlbumById(id);
+  // Assume 404 status if the albums is not found
+  if (!albumID) {
+    return res
+      .status(404)
+      .json({ status: "fail", data: { message: "Album not found" } });
+  }
+  res.status(200).json({ status: "success", data: albumID });
+});
 
 // Endpoint to create a new album
-app.post("/albums/", async function (req, res) {});
+app.post("/albums/", async function (req, res) {
+  try {
+    const data = req.body;
+    const newAlbum = await createAlbum(data);
+    res.status(201).json({ status: "success", data: newAlbum });
+  } catch (err) {
+    res.status(404).json({
+      success: false,
+      payload: {
+        error: "Request failed",
+      },
+    });
+  }
+});
 
 // Endpoint to update a specific album by id
-app.patch("/albums/:id", async function (req, res) {});
+app.patch("/albums/:id", async function (req, res) {
+  const id = req.params.id;
+  const updates = req.body;
+  const updatedAlbum = await updateAlbumById(id, updates);
+  if (!updatedAlbum) {
+    return res
+      .status(404)
+      .json({ status: "fail", data: { message: "Album not updated" } });
+  }
+  res.status(200).json({ status: "success", data: updatedAlbum });
+});
 
 // Endpoint to delete a specific album by id
 app.delete("/albums/:id", async function (req, res) {});
