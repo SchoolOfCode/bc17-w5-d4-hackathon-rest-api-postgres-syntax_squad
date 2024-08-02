@@ -6,11 +6,18 @@
 
 Steps to take:
 
--Clone the repository
--Run `npm install`
--Add Environment variales to the .evn.example file, then rename the file to .env
--Start the app `npm run dev`
--Rename resource_one and resource_two files
--Write helper functions for artists and albums
--Write CRUD requests for artist and albums
--Test your requests work on Postman
+1. Clone the repository
+
+2. Run `npm install`
+
+3. Add Environment variales to the .evn.example file, then rename the file to .env
+
+4. Start the app `npm run dev`
+
+5. Rename resource_one and resource_two files
+
+6. Write helper functions for artists and albums
+
+7. Write CRUD requests for artist and albums
+
+8. Test your requests work on Postman
