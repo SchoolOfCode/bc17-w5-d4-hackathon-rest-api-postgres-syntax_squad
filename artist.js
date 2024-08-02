@@ -24,8 +24,14 @@ export async function createArtist(artist) {
 
 export async function updateArtistById(id, updates) {
   // Query the database to update the resource and return the newly updated resource or null
+  const queryText = "UPDATE artists SET name = $1 WHERE id = $2 RETURNING *";
+  const result = await pool.query(queryText, [updates.name,id]);
+  return result.rows[0] || null;
 }
 
 export async function deleteArtistById(id) {
   // Query the database to delete the resource and return the deleted resource or null
+  const queryText = "DELETE FROM artists WHERE id = $1 RETURNING *"
+  const result = await pool.query(queryText, [id]);
+  return result.rows[0] || null;
 }

@@ -65,10 +65,31 @@ app.post("/artists/", async function (req, res) {
 });
 
 // Endpoint to update a specific artist by id
-app.patch("/artists/:id", async function (req, res) {});
+app.patch("/artists/:id", async function (req, res){
+  const id = req.params.id;
+  const updates = req.body;
+  const updatedArtist = await updateArtistById(id, updates);
+  if (!updatedArtist) {
+    return res
+      .status(404)
+      .json({ status: "fail", data: { message: "Artist not updated" }});
+  }
+  res.status(200).json({ status: "success", data: updatedArtist});
+});
+
 
 // Endpoint to delete a specific artist by id
-app.delete("/artists/:id", async function (req, res) {});
+app.delete("/artists/:id", async function (req, res) {
+  const id = req.params.id;
+  const deletedArtist = await deleteArtistById(id);
+  if (!deletedArtist) {
+    return res
+      .status(404)
+      .json({ status: "fail", data: { message: "Artist not deleted" }});
+  }
+  res.status(200).json({ status: "success", data: deletedArtist});
+});
+
 
 // Resource Two Route Handlers
 
